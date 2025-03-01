@@ -1,0 +1,11 @@
+# Habilita el motor de reescritura de URLs en Apache
+RewriteEngine On
+
+# Comprueba si la solicitud no es un archivo existente
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Comprueba si la solicitud no es un directorio existente
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirige todas las solicitudes a index.php, manteniendo la cadena de consulta (QSA) y deteniendo otras reglas (L)
+RewriteRule ^(.*)$ index.php [QSA,L]
