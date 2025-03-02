@@ -40,6 +40,10 @@ if(file_exists($controllerFile)) {
             $tableController->delete($request[3]);
             break;
 
+        case 'PATCH':
+            $tableController->patch($request[3]);
+            break;
+
         default:
             echo json_encode(["message" => "Metodo no permitido"]);
     }

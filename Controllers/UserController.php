@@ -77,4 +77,12 @@ class UserController
             'deleted' => $deleted
         ]);
     }
+
+    public function patch($id){
+        $patched = $this->user->patch($id);
+        echo json_encode([
+            'Estatus' => 'Code 200',
+            'patched' => $patched
+        ]);
+    }
 }

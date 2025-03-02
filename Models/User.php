@@ -88,4 +88,19 @@ class User
             die("Error en la consulta SQL: " . $errors[2]);
         }
     }
+
+    public function patch($id){
+        $query = "UPDATE " . $this->table . " SET status = CASE WHEN status = 1 THEN 0 WHEN status = 0 THEN 1 END WHERE id = ?";
+        $stmt = $this->connect->prepare($query);
+
+        $id = intval($id);
+        $stmt->bindParam(1, $id);
+
+        if($stmt->execute()){
+            return true;
+        } else {
+            $errors = $stmt->errorInfo();
+            die("Error en la consulta SQL: " . $errors[2]);
+        }
+    }
 }
