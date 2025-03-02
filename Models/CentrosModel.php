@@ -25,10 +25,10 @@ class CentrosModel
     }
 
     public function getById($id){
-        $query = "SELECT * FROM " . $this->table . " WHERE id_centro = ?";
+        $query = "SELECT * FROM " . $this->table . " WHERE nombre LIKE ?";
         $stmt = $this->connect->prepare($query);
 
-        $id = intval($id);
+        $id = "%$id%";
         $stmt->bindParam(1, $id);
 
         if($stmt->execute()){

@@ -28,7 +28,7 @@ class CentrosController
 
     public function getById($id){
         $stmt = $this->centro->getById($id);
-        $centro = $stmt->fetch(PDO::FETCH_ASSOC);
+        $centro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(!$centro){
             header("HTTP/1.1 404 Not Found");
