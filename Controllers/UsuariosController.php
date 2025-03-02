@@ -45,4 +45,61 @@ class UsuariosController
         }
     }
 
+    public function create(){
+
+        $postData = json_decode(file_get_contents("php://input"));
+
+        $hashedPassword = password_hash($postData->password, PASSWORD_BCRYPT);
+
+        $this->usuario->documento = $postData->documento;
+        $this->usuario->nombre = $postData->nombre;
+        $this->usuario->apellido = $postData->apellido;
+        $this->usuario->edad = $postData->edad;
+        $this->usuario->telefono = $postData->telefono;
+        $this->usuario->correo = $postData->correo;
+        $this->usuario->cargo = $postData->cargo;
+        $this->usuario->password = $hashedPassword;
+
+        $created = $this->usuario->create();
+
+        if($created){
+            echo json_encode([
+                'Estatus' => 'Code 201',
+                'message' => 'User created successfully'
+            ]);
+        }
+    }
+
+    public function update($id){
+        $putData = json_decode(file_get_contents("php://input"));
+
+        $hashedPassword = password_hash($putData->password, PASSWORD_BCRYPT);
+
+        $this->usuario->documento = $putData->documento;
+        $this->usuario->nombre = $putData->nombre;
+        $this->usuario->apellido = $putData->apellido;
+        $this->usuario->edad = $putData->edad;
+        $this->usuario->telefono = $putData->telefono;
+        $this->usuario->correo = $putData->correo;
+        $this->usuario->cargo = $putData->cargo;
+        $this->usuario->password = $hashedPassword;
+
+        $updated = $this->usuario->update($id);
+
+        if($updated){
+            echo json_encode([
+                'Estatus' => 'Code 200',
+                'message' => 'User updated successfully'
+            ]);
+        }
+    }
+
+    public function delete($id){
+        $deleted = $this->usuario->delete($id);
+        echo json_encode([
+            'Estatus' => 'Code 200',
+            'deleted' => $deleted
+        ]);
+    }
+
 }
