@@ -102,4 +102,12 @@ class UsuariosController
         ]);
     }
 
+    public function patch($id){
+        $patched = $this->usuario->patch($id);
+        echo json_encode([
+            'Estatus' => 'Code 200',
+            'patched' => $patched
+        ]);
+    }
+
 }

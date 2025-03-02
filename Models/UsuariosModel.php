@@ -105,4 +105,19 @@ class UsuariosModel
             die("Error en la consulta SQL: " . $errors[2]);
         }
     }
+
+    public function patch($id){
+        $query = "UPDATE " . $this->table . " SET estado = CASE WHEN estado = 1 THEN 0 WHEN estado = 0 THEN 1 END WHERE id_usuario = ?";
+        $stmt = $this->connect->prepare($query);
+
+        $id = intval($id);
+        $stmt->bindParam(1, $id);
+
+        if($stmt->execute()){
+            return true;
+        } else {
+            $errors = $stmt->errorInfo();
+            die("Error en la consulta SQL: " . $errors[2]);
+        }
+    }
 }
