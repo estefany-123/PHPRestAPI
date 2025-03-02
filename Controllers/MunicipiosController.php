@@ -1,46 +1,46 @@
 <?php
 require_once('Config/Database.php');
-require_once('Models/CentrosModel.php');
+require_once('Models/MunicipiosModel.php');
 
-class CentrosController
+class MunicipiosController
 {
     private $db;
-    private $centro;
+    private $municipio;
 
     public function __construct()
     {
         $database = new Database();
 
         $this->db = $database->getConnection();
-        $this->centro = new CentrosModel($this->db);
+        $this->municipio = new MunicipiosModel($this->db);
     }
 
     public function getAll()
     {
-        $stmt = $this->centro->getAll();
-        $centros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->municipio->getAll();
+        $municipios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         echo json_encode([
             'Estatus' => 'Code 200',
-            'centros' => $centros
+            'municipios' => $municipios
         ]);
     }
 
     public function getById($id){
-        $stmt = $this->centro->getById($id);
-        $centro = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->municipio->getById($id);
+        $municipio = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if(!$centro){
+        if(!$municipio){
             header("HTTP/1.1 404 Not Found");
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'Centro not found'
+                'message' => 'Municipio not found'
             ]);
         }
         else{
             echo json_encode([
                 'Estatus' => 'Code 200',
-                'centro' => $centro
+                'municipio' => $municipio
             ]);
         }
     }
@@ -49,15 +49,15 @@ class CentrosController
 
         $postData = json_decode(file_get_contents("php://input"));
 
-        $this->centro->nombre = $postData->nombre;
-        $this->centro->fk_municipio = $postData->fk_municipio;
+        $this->municipio->nombre = $postData->nombre;
+        $this->municipio->departamento = $postData->departamento;
 
-        $created = $this->centro->create();
+        $created = $this->municipio->create();
 
         if($created){
             echo json_encode([
                 'Estatus' => 'Code 201',
-                'message' => 'Centro created successfully'
+                'message' => 'Municipio created successfully'
             ]);
         }
     }
@@ -65,20 +65,21 @@ class CentrosController
     public function update($id){
         $putData = json_decode(file_get_contents("php://input"));
 
-        $this->centro->nombre = $putData->nombre;
+        $this->municipio->nombre = $putData->nombre;
+        $this->municipio->departamento = $putData->departamento;
 
-        $updated = $this->centro->update($id);
+        $updated = $this->municipio->update($id);
 
         if($updated){
             echo json_encode([
                 'Estatus' => 'Code 200',
-                'message' => 'Centro updated successfully'
+                'message' => 'Municipio updated successfully'
             ]);
         }
     }
 
     public function delete($id){
-        $deleted = $this->centro->delete($id);
+        $deleted = $this->municipio->delete($id);
         echo json_encode([
             'Estatus' => 'Code 200',
             'deleted' => $deleted
@@ -86,7 +87,7 @@ class CentrosController
     }
 
     public function patch($id){
-        $patched = $this->centro->patch($id);
+        $patched = $this->municipio->patch($id);
         echo json_encode([
             'Estatus' => 'Code 200',
             'patched' => $patched
