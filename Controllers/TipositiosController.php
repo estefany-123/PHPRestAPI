@@ -5,7 +5,7 @@ require_once('Models/TipositiosModel.php');
 class TipositiosController
 {
     private $db;
-    private $categoria;
+    private $tipositio;
 
     public function __construct()
     {
@@ -26,8 +26,8 @@ class TipositiosController
         ]);
     }
 
-    public function getById($id){
-        $stmt = $this->tipositio->getById($id);
+    public function getById($nombre){
+        $stmt = $this->tipositio->getById($nombre);
         $tipositio = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(!$tipositio){
@@ -50,6 +50,7 @@ class TipositiosController
         $postData = json_decode(file_get_contents("php://input"));
 
         $this->tipositio->nombre = $postData->nombre;
+        $this->tipositio->estado = $postData->estado;
 
         $created = $this->tipositio->create();
 

@@ -3,9 +3,9 @@
 class Database
 {
     private $host = "localhost";
-    private $user = "root";
-    private $pass = "";
-    private $dbname = "api_database";
+    private $user = "postgres";
+    private $pass = "pp";
+    private $dbname = "Formatrack";
 
     public $connect;
 
@@ -14,9 +14,8 @@ class Database
         $this->connect = null;
 
         try {
-            $this->connect = new PDO("mysql:host=$this->host;dbname=$this->dbname", $this->user, $this->pass);
+            $this->connect = new PDO("pgsql:host=$this->host;dbname=$this->dbname", $this->user, $this->pass);
             $this->connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->connect->exec("SET CHARACTER SET utf8");
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();

@@ -45,6 +45,25 @@ class UsuariosController
         }
     }
 
+    public function login($correo, $password){
+        $stmt = $this->usuario->login($correo, $password);
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);   
+
+        if(!$usuario){
+            header("HTTP/1.1 404 Not Found");
+            echo json_encode([
+                'Estatus' => 'Code 404',
+                'message' => 'User not found'
+            ]);
+        }        
+        else{
+            echo json_encode([
+                'Estatus' => 'Code 200',
+                'usuario' => $usuario
+            ]);
+        }
+    }
+
     public function create(){
 
         $postData = json_decode(file_get_contents("php://input"));
@@ -57,8 +76,10 @@ class UsuariosController
         $this->usuario->edad = $postData->edad;
         $this->usuario->telefono = $postData->telefono;
         $this->usuario->correo = $postData->correo;
+        $this->usuario->estado = $postData->estado;
         $this->usuario->cargo = $postData->cargo;
         $this->usuario->password = $hashedPassword;
+        $this->usuario->fk_rol = $postData->fk_rol;
 
         $created = $this->usuario->create();
 

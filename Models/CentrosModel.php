@@ -6,6 +6,7 @@ class CentrosModel
     private $table = 'Centros';
 
     public $nombre;
+    public $estado;
     public $fk_municipio;
 
     public function __construct($db){
@@ -25,12 +26,12 @@ class CentrosModel
         }
     }
 
-    public function getById($id){
+    public function getById($nombre){
         $query = "SELECT * FROM " . $this->table . " WHERE nombre LIKE ?";
         $stmt = $this->connect->prepare($query);
 
-        $id = "%$id%";
-        $stmt->bindParam(1, $id);
+        $nombre = "%$nombre%";
+        $stmt->bindParam(1, $nombre);
 
         if($stmt->execute()){
             return $stmt;
@@ -41,11 +42,12 @@ class CentrosModel
     }
 
     public function create(){
-        $query = "INSERT INTO " . $this->table . "(nombre,fk_municipio) VALUES(?,?)";
+        $query = "INSERT INTO " . $this->table . "(nombre,estado,fk_municipio) VALUES(?,?,?)";
         $stmt = $this->connect->prepare($query);
 
         $stmt->bindParam(1, $this->nombre);
-        $stmt->bindParam(2, $this->fk_municipio);
+        $stmt->bindParam(2, $this->estado);
+        $stmt->bindParam(3, $this->fk_municipio);
 
         if($stmt->execute()){
             return true;
@@ -87,7 +89,7 @@ class CentrosModel
     }
 
     public function patch($id){
-        $query = "UPDATE " . $this->table . " SET estado = CASE WHEN estado = 1 THEN 0 WHEN estado = 0 THEN 1 END WHERE id_centro = ?";
+        $query = "UPDATE " . $this->table . " SET estado = CASE WHEN estado = true THEN false WHEN estado = false THEN true END WHERE id_centro = ?";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);

@@ -26,8 +26,8 @@ class MunicipiosController
         ]);
     }
 
-    public function getById($id){
-        $stmt = $this->municipio->getById($id);
+    public function getById($nombre){
+        $stmt = $this->municipio->getById($nombre);
         $municipio = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(!$municipio){
@@ -50,6 +50,7 @@ class MunicipiosController
         $postData = json_decode(file_get_contents("php://input"));
 
         $this->municipio->nombre = $postData->nombre;
+        $this->municipio->estado = $postData->estado;
         $this->municipio->departamento = $postData->departamento;
 
         $created = $this->municipio->create();

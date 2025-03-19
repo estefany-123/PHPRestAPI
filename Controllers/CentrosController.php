@@ -26,8 +26,8 @@ class CentrosController
         ]);
     }
 
-    public function getById($id){
-        $stmt = $this->centro->getById($id);
+    public function getById($nombre){
+        $stmt = $this->centro->getById($nombre);
         $centro = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(!$centro){
@@ -50,6 +50,7 @@ class CentrosController
         $postData = json_decode(file_get_contents("php://input"));
 
         $this->centro->nombre = $postData->nombre;
+        $this->centro->estado = $postData->estado;
         $this->centro->fk_municipio = $postData->fk_municipio;
 
         $created = $this->centro->create();

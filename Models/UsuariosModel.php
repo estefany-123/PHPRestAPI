@@ -11,8 +11,10 @@ class UsuariosModel
     public $edad;
     public $telefono;
     public $correo;
+    public $estado;
     public $cargo;
     public $password;
+    public $fk_rol;
 
 
     public function __construct($db){
@@ -46,9 +48,24 @@ class UsuariosModel
             die("Error en la consulta SQL: " . $errors[2]);
         }
     }
+    
+    public function login($correo, $password){
+        $query = "SELECT * FROM " . $this->table . " WHERE correo = ? AND password = ?";
+        $stmt = $this->connect->prepare($query);
+
+        $stmt->bindParam(1, $correo);
+        $stmt->bindParam(2, $password);
+
+        if($stmt->execute()){
+            return $stmt;
+        } else {
+            $errors = $stmt->errorInfo();
+            die("Error en la consulta SQL: " . $errors[2]);
+        }
+    }
 
     public function create(){
-        $query = "INSERT INTO " . $this->table . "(documento,nombre,apellido,edad,telefono,correo,cargo,password) VALUES(?,?,?,?,?,?,?,?)";
+        $query = "INSERT INTO " . $this->table . "(documento,nombre,apellido,edad,telefono,correo,estado,cargo,password,fk_rol) VALUES(?,?,?,?,?,?,?,?,?,?)";
         $stmt = $this->connect->prepare($query);
 
         $stmt->bindParam(1, $this->documento);
@@ -57,8 +74,10 @@ class UsuariosModel
         $stmt->bindParam(4, $this->edad);
         $stmt->bindParam(5, $this->telefono);
         $stmt->bindParam(6, $this->correo);
-        $stmt->bindParam(7, $this->cargo);
-        $stmt->bindParam(8, $this->password);
+        $stmt->bindParam(7, $this->estado);
+        $stmt->bindParam(8, $this->cargo);
+        $stmt->bindParam(9, $this->password);
+        $stmt->bindParam(10, $this->fk_rol);
 
         if($stmt->execute()){
             return true;
@@ -69,7 +88,7 @@ class UsuariosModel
     }
 
     public function update($id){
-        $query = "UPDATE " . $this->table . " SET documento = ?, nombre = ?, apellido = ?, edad = ?, telefono = ?, correo = ?, cargo = ?, password = ? WHERE id_usuario = ?";
+        $query = "UPDATE " . $this->table . " SET documento = ?, nombre = ?, apellido = ?, edad = ?, telefono = ?, correo = ?, estado = ?, cargo = ?, password = ? WHERE id_usuario = ?";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);
@@ -79,9 +98,10 @@ class UsuariosModel
         $stmt->bindParam(4, $this->edad);
         $stmt->bindParam(5, $this->telefono);
         $stmt->bindParam(6, $this->correo);
-        $stmt->bindParam(7, $this->cargo);
-        $stmt->bindParam(8, $this->password);
-        $stmt->bindParam(9, $id);
+        $stmt->bindParam(7, $this->estado);
+        $stmt->bindParam(8, $this->cargo);
+        $stmt->bindParam(9, $this->password);
+        $stmt->bindParam(10, $id);
 
         if($stmt->execute()){
             return true;
@@ -107,7 +127,7 @@ class UsuariosModel
     }
 
     public function patch($id){
-        $query = "UPDATE " . $this->table . " SET estado = CASE WHEN estado = 1 THEN 0 WHEN estado = 0 THEN 1 END WHERE id_usuario = ?";
+        $query = "UPDATE " . $this->table . " SET estado = CASE WHEN estado = true THEN false WHEN estado =  false THEN true END WHERE id_usuario = ?";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);

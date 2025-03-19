@@ -7,29 +7,32 @@ header("Content-Type: application/json; charset=UTF-8");
 // Obtiene la URL de la solicitud
 $request = explode("/", trim($_SERVER['REQUEST_URI']));
 $method = $_SERVER["REQUEST_METHOD"];
-$table = ucfirst(strtolower($request[2]))."Controller";
+$table = ucfirst(strtolower($request[2])) . "Controller";
 
 // Carga el archivo del controlador correspondiente
 $controllerFile = __DIR__ . DIRECTORY_SEPARATOR . "Controllers" . DIRECTORY_SEPARATOR . $table . ".php";
 
 // Verifica si el archivo del controlador existe
-if(file_exists($controllerFile)) {
+if (file_exists($controllerFile)) {
     require_once $controllerFile;
 
     $tableController = new $table();
 
     switch ($method) {
         case 'GET':
-            if(isset($request[3]) && !empty($request[3]) ) {
+            if (isset($request[3]) && !empty($request[3])) {
                 $tableController->getById($request[3]);
-            }
-            else {
+            } else {
                 $tableController->getAll();
             }
             break;
 
         case 'POST':
-            $tableController->create();
+            if ($request[3] == 'login')  {
+                $tableController->login($_POST['correo'], $_POST['password']);
+            } else {
+                $tableController->create();
+            }
             break;
 
         case 'PUT':
@@ -47,7 +50,6 @@ if(file_exists($controllerFile)) {
         default:
             echo json_encode(["message" => "Metodo no permitido"]);
     }
-}
-else {
+} else {
     echo json_encode(["message" => "Recurso no permitido"]);
 }
