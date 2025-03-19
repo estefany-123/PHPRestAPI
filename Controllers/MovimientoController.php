@@ -33,7 +33,7 @@ class MovimientoController
         if(!$movimiento){
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'User not found'
+                'message' => 'Motion not found'
             ]);
         }
         else{
@@ -51,9 +51,9 @@ class MovimientoController
         $this->movimiento->cantidad = $postData->cantidad;
         $this->movimiento->hora_ingreso = $postData->hora_ingreso;
         $this->movimiento->hora_salida = $postData->hora_salida;
-        $this->movimiento->aceptada = $postData->aceptada;
+        $this->movimiento->aceptado = $postData->aceptado;
         $this->movimiento->en_proceso = $postData->en_proceso;
-        $this->movimiento->cancelada = $postData->cancelada;
+        $this->movimiento->cancelado = $postData->cancelado;
         $this->movimiento->devolutivo = $postData->devolutivo;
         $this->movimiento->no_devolutivo = $postData->no_devolutivo;
         $this->movimiento->fk_usuario = $postData->fk_usuario;
@@ -75,15 +75,9 @@ class MovimientoController
         $this->movimiento->cantidad = $putData->cantidad;
         $this->movimiento->hora_ingreso = $putData->hora_ingreso;
         $this->movimiento->hora_salida = $putData->hora_salida;
-        $this->movimiento->hora_salida = $putData->hora_salida;
-        $this->movimiento->hora_salida = $putData->hora_salida;
-        $this->movimiento->hora_salida = $putData->hora_salida;
-        $this->movimiento->hora_salida = $putData->hora_salida;
-        $this->movimiento->hora_salida = $putData->hora_salida;
-        $this->movimiento->hora_salida = $putData->hora_salida;
-        $this->movimiento->hora_salida = $putData->hora_salida;
-        $this->movimiento->aceptada = $putData->aceptada;
-        $this->movimiento->cancelada = $putData->cancelada;
+        $this->movimiento->aceptado = $putData->aceptado;
+        $this->movimiento->en_proceso = $putData->en_proceso;
+        $this->movimiento->cancelado = $putData->cancelado;
         $this->movimiento->devolutivo = $putData->devolutivo;
         $this->movimiento->no_devolutivo = $putData->no_devolutivo;
         $this->movimiento->fk_usuario = $putData->fk_usuario;

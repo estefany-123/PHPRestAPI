@@ -33,7 +33,7 @@ class SolicitudController
         if(!$solicitud){
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'User not found'
+                'message' => 'Solicitud not found'
             ]);
         }
         else{

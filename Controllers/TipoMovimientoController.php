@@ -33,7 +33,7 @@ class TipoMovimientoController
         if(!$tipoMovimiento){
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'User not found'
+                'message' => 'Tipo Movimiento not found'
             ]);
         }
         else{

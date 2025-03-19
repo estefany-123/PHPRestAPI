@@ -10,9 +10,9 @@ class MovimientoModel
     public $cantidad;
     public $hora_ingreso;
     public $hora_salida;
-    public $aceptada;
+    public $aceptado;
     public $en_proceso;
-    public $cancelada;
+    public $cancelado;
     public $devolutivo;
     public $no_devolutivo;
     public $fk_usuario;
@@ -53,16 +53,16 @@ class MovimientoModel
     }
 
     public function create(){
-        $query = "INSERT INTO " . $this->table . "(descripción , cantidad, hora_ingreso, hora_salida, aceptada, en proceso, cancelada, devolutivo, no_devolutivo, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_inventario) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
+        $query = "INSERT INTO " . $this->table . "(descripcion , cantidad, hora_ingreso, hora_salida, aceptado, en_proceso, cancelado, devolutivo, no_devolutivo, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_inventario) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
         $stmt = $this->connect->prepare($query);
 
         $stmt->bindParam(1, $this->descripcion);
         $stmt->bindParam(2, $this->cantidad);
         $stmt->bindParam(3, $this->hora_ingreso);
         $stmt->bindParam(4, $this->hora_salida);
-        $stmt->bindParam(5, $this->aceptada);
+        $stmt->bindParam(5, $this->aceptado);
         $stmt->bindParam(6, $this->en_proceso);
-        $stmt->bindParam(7, $this->cancelada);
+        $stmt->bindParam(7, $this->cancelado);
         $stmt->bindParam(8, $this->devolutivo);
         $stmt->bindParam(9, $this->no_devolutivo);
         $stmt->bindParam(10, $this->fk_usuario);
@@ -79,16 +79,16 @@ class MovimientoModel
     }
 
     public function update($id){
-        $query = "UPDATE " . $this->table . " SET descripcion = $1, cantidad = $2, hora_ingreso = $3, hora_salida = $4, aceptada = $5, en proceso = $6, cancelada = $7, devolutivo = $8, no_devolutivo = $9, fk_usuario = $10, fk_tipo_movimiento = $11, fk_sitio = $12, fk_inventario = $13 WHERE id_movimiento = $14";
+        $query = "UPDATE " . $this->table . " SET descripcion = $1, cantidad = $2, hora_ingreso = $3, hora_salida = $4, aceptado = $5, en_proceso = $6, cancelado = $7, devolutivo = $8, no_devolutivo = $9, fk_usuario = $10, fk_tipo_movimiento = $11, fk_sitio = $12, fk_inventario = $13 WHERE id_movimiento = $14";
         $stmt = $this->connect->prepare($query);
 
         $stmt->bindParam(1, $this->descripcion);
         $stmt->bindParam(2, $this->cantidad);
         $stmt->bindParam(3, $this->hora_ingreso);
         $stmt->bindParam(4, $this->hora_salida);
-        $stmt->bindParam(5, $this->aceptada);
+        $stmt->bindParam(5, $this->aceptado);
         $stmt->bindParam(6, $this->en_proceso);
-        $stmt->bindParam(7, $this->cancelada);
+        $stmt->bindParam(7, $this->cancelado);
         $stmt->bindParam(8, $this->devolutivo);
         $stmt->bindParam(9, $this->no_devolutivo);
         $stmt->bindParam(10, $this->fk_usuario);
@@ -123,7 +123,7 @@ class MovimientoModel
     }
 
     public function patch($id){
-        $query = "UPDATE " . $this->table . " SET estado = CASE WHEN estado = 1 THEN 0 WHEN estado = 0 THEN 1 END WHERE id_movimiento = $1";
+        $query = "UPDATE " . $this->table . " SET aceptado = (CASE WHEN $1 = 'aceptado' THEN TRUE ELSE FALSE END), en_proceso = (CASE WHEN $1 = 'en_proceso' THEN TRUE ELSE FALSE END), cancelado = (CASE WHEN $1 = 'cancelado' THEN TRUE ELSE FALSE END) WHERE id_movimiento = $2";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);

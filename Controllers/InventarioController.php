@@ -33,7 +33,7 @@ class InventarioController
         if(!$inventario){
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'User not found'
+                'message' => 'Inventory not found'
             ]);
         }
         else{

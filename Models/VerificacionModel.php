@@ -3,7 +3,7 @@
 class VerificacionModel
 {
     private $connect;
-    private $table = 'inventarios';
+    private $table = 'verificaciones';
 
     public $id;
     public $persona_encargada;

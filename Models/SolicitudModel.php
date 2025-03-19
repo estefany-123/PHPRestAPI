@@ -105,7 +105,7 @@ class SolicitudModel
     }
 
     public function patch($id){
-        $query = "UPDATE " . $this->table . " SET aceptada = CASE WHEN aceptada = 1 THEN 0 END, pendiente = CASE WHEN aceptada = 1 THEN 0 END, rechazada = CASE WHEN aceptada = 1 THEN 0 END WHERE id_solicitud = $1";
+        $query = "UPDATE " . $this->table . " SET aceptado = (CASE WHEN $1 = 'aceptado' THEN TRUE ELSE FALSE END), en_proceso = (CASE WHEN $1 = 'en_proceso' THEN TRUE ELSE FALSE END), cancelado = (CASE WHEN $1 = 'cancelado' THEN TRUE ELSE FALSE END) WHERE id_movimiento = $2";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);

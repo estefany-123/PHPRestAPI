@@ -33,7 +33,7 @@ class ElementoController
         if(!$elemento){
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'User not found'
+                'message' => 'Element not found'
             ]);
         }
         else{

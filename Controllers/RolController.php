@@ -33,7 +33,7 @@ class RolController
         if(!$rol){
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'User not found'
+                'message' => 'Rol not found'
             ]);
         }
         else{

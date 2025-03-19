@@ -33,7 +33,7 @@ class UnidadMedidaController
         if(!$unidad){
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'User not found'
+                'message' => 'Unidad not found'
             ]);
         }
         else{
