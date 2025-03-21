@@ -30,7 +30,7 @@ class VerificacionModel
     }
 
     public function getById($id){
-        $query = "SELECT * FROM " . $this->table . " WHERE id_verificacion = $1";
+        $query = "SELECT * FROM " . $this->table . " WHERE id_verificacion = ?";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);
@@ -45,13 +45,14 @@ class VerificacionModel
     }
 
     public function create(){
-        $query = "INSERT INTO " . $this->table . "(persona_encargada, persona_asignada, hora_ingreso, hora_fin, fk_inventario) VALUES($1, $2, $3, $4, $5)";
+        $query = "INSERT INTO " . $this->table . "(persona_encargada, persona_asignada, hora_ingreso, hora_fin, fk_inventario) VALUES(?,?,?,?,?)";
         $stmt = $this->connect->prepare($query);
 
-        $stmt->bindParam(1, $this->persona_encargada);
-        $stmt->bindParam(2, $this->persona_asignada);
-        $stmt->bindParam(3, $this->hora_ingreso);
-        $stmt->bindParam(4, $this->hora_fin);
+        $stmt->bindParam(1, $this->persona_encargada, PDO::PARAM_STR);
+        $stmt->bindParam(2, $this->persona_asignada, PDO::PARAM_STR);
+        $stmt->bindParam(3, $this->hora_ingreso, PDO::PARAM_STR);
+        $stmt->bindParam(4, $this->hora_fin, PDO::PARAM_STR);
+        $stmt->bindParam(5, $this->fk_inventario, PDO::PARAM_INT);
 
         if($stmt->execute()){
             return true;
@@ -62,14 +63,14 @@ class VerificacionModel
     }
 
     public function update($id){
-        $query = "UPDATE " . $this->table . " SET persona_encargada = $1, persona_asignada = $2, hora_ingreso = $3, hora_fin = $4, fk_inventario = $5 WHERE id_verificacion = $6";
+        $query = "UPDATE " . $this->table . " SET persona_encargada = ?, persona_asignada = ?, hora_ingreso = ?, hora_fin = ?, fk_inventario = ? WHERE id_verificacion = ?";
         $stmt = $this->connect->prepare($query);
 
-        $stmt->bindParam(1, $this->persona_encargada);
-        $stmt->bindParam(2, $this->persona_asignada);
-        $stmt->bindParam(3, $this->hora_ingreso);
-        $stmt->bindParam(4, $this->hora_fin);
-        $stmt->bindParam(5, $this->fk_inventario);
+        $stmt->bindParam(1, $this->persona_encargada, PDO::PARAM_STR);
+        $stmt->bindParam(2, $this->persona_asignada, PDO::PARAM_STR);
+        $stmt->bindParam(3, $this->hora_ingreso, PDO::PARAM_STR);
+        $stmt->bindParam(4, $this->hora_fin, PDO::PARAM_STR);
+        $stmt->bindParam(5, $this->fk_inventario, PDO::PARAM_INT);
 
         $id = intval($id);
         $stmt->bindParam(6, $id);
@@ -83,7 +84,7 @@ class VerificacionModel
     }
 
     public function delete($id){
-        $query = "DELETE FROM " . $this->table . " WHERE id_verificacion = $1";
+        $query = "DELETE FROM " . $this->table . " WHERE id_verificacion = ?";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);

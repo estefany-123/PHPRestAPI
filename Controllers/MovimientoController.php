@@ -99,6 +99,7 @@ class MovimientoController
             'Estatus' => 'Code 200',
             'deleted' => $deleted
         ]);
+        
     }
 
     public function patch($id){

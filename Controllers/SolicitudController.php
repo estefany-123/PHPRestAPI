@@ -53,7 +53,7 @@ class SolicitudController
         $this->solicitud->pendiente = $postData->pendiente;
         $this->solicitud->rechazada = $postData->rechazada;
         $this->solicitud->fk_usuario = $postData->fk_usuario;
-        $this->solicitud->fk_elemento = $postData->fk_elemento;
+        $this->solicitud->fk_inventario = $postData->fk_inventario;
 
         $created = $this->solicitud->create();
         echo json_encode([
@@ -71,7 +71,7 @@ class SolicitudController
         $this->solicitud->pendiente = $putData->pendiente;
         $this->solicitud->rechazada = $putData->rechazada;
         $this->solicitud->fk_usuario = $putData->fk_usuario;
-        $this->solicitud->fk_elemento = $putData->fk_elemento;
+        $this->solicitud->fk_inventario = $putData->fk_inventario;
 
         $updated = $this->solicitud->update($id);
 

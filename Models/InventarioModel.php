@@ -29,7 +29,7 @@ class InventarioModel
     }
 
     public function getById($id){
-        $query = "SELECT * FROM " . $this->table . " WHERE id_inventario = $1";
+        $query = "SELECT * FROM " . $this->table . " WHERE id_inventario = ?";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);
@@ -44,13 +44,13 @@ class InventarioModel
     }
 
     public function create(){
-        $query = "INSERT INTO " . $this->table . "(stock, estado, fk_sitio, fk_elemento) VALUES($1, $2, $3, $4)";
+        $query = "INSERT INTO " . $this->table . "(stock, estado, fk_sitio, fk_elemento) VALUES(?,?,?,?)";
         $stmt = $this->connect->prepare($query);
 
-        $stmt->bindParam(1, $this->stock);
-        $stmt->bindParam(2, $this->estado);
-        $stmt->bindParam(3, $this->fk_sitio);
-        $stmt->bindParam(4, $this->fk_elemento);
+        $stmt->bindParam(1, $this->stock, PDO::PARAM_INT);
+        $stmt->bindParam(2, $this->estado, PDO::PARAM_BOOL);
+        $stmt->bindParam(3, $this->fk_sitio, PDO::PARAM_INT);
+        $stmt->bindParam(4, $this->fk_elemento, PDO::PARAM_INT);
 
         if($stmt->execute()){
             return true;
@@ -61,13 +61,13 @@ class InventarioModel
     }
 
     public function update($id){
-        $query = "UPDATE " . $this->table . " SET stock = $1, estado = $2, fk_sitio = $3, fk_elemento = $4 WHERE id_inventario = $5";
+        $query = "UPDATE " . $this->table . " SET stock = ?, estado = ?, fk_sitio = ?, fk_elemento = ? WHERE id_inventario = ?";
         $stmt = $this->connect->prepare($query);
 
-        $stmt->bindParam(1, $this->stock);
-        $stmt->bindParam(2, $this->estado);
-        $stmt->bindParam(3, $this->fk_sitio);
-        $stmt->bindParam(4, $this->fk_elemento);
+        $stmt->bindParam(1, $this->stock, PDO::PARAM_INT);
+        $stmt->bindParam(2, $this->estado, PDO::PARAM_BOOL);
+        $stmt->bindParam(3, $this->fk_sitio, PDO::PARAM_INT);
+        $stmt->bindParam(4, $this->fk_elemento, PDO::PARAM_INT);
 
         $id = intval($id);
         $stmt->bindParam(5, $id);
@@ -81,7 +81,7 @@ class InventarioModel
     }
 
     public function delete($id){
-        $query = "DELETE FROM " . $this->table . " WHERE id_inventario = $1";
+        $query = "DELETE FROM " . $this->table . " WHERE id_inventario = ?";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);
@@ -96,7 +96,7 @@ class InventarioModel
     }
 
     public function patch($id){
-        $query = "UPDATE " . $this->table . " SET estado = CASE WHEN estado = 1 THEN 0 WHEN estado = 0 THEN 1 END WHERE id_inventario = $1";
+        $query = "UPDATE " . $this->table . " SET estado = CASE WHEN estado = true THEN false WHEN estado = false THEN true END WHERE id_inventario = ?";
         $stmt = $this->connect->prepare($query);
 
         $id = intval($id);
