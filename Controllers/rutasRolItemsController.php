@@ -1,36 +1,36 @@
 <?php
 require_once('Config/Database.php');
-require_once('Models/User.php');
+require_once('Models/rutasRolItems.php');
 
-class UserController
+class rutasRolItemsController
 {
     private $db;
-    private $user;
+    private $rutasRolItems;
 
     public function __construct()
     {
         $database = new Database();
 
         $this->db = $database->getConnection();
-        $this->user = new User($this->db);
+        $this->rutasRolItems = new rutasRolItems($this->db);
     }
 
     public function getAll()
     {
-        $stmt = $this->user->getAll();
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->rutasRolItems->getAll();
+        $rol_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         echo json_encode([
             'Estatus' => 'Code 200',
-            'users' => $users
+            'usersFicha' => $rol_items
         ]);
     }
 
-    public function getById($id){
-        $stmt = $this->user->getById($id);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getById($id_ruta_rol){
+        $stmt = $this->rutasRolItems->getById($id_ruta_rol);
+        $rol_items = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if(!$user){
+        if(!$rol_items){
             echo json_encode([
                 'Estatus' => 'Code 404',
                 'message' => 'User not found'
@@ -39,7 +39,7 @@ class UserController
         else{
             echo json_encode([
                 'Estatus' => 'Code 200',
-                'user' => $user
+                'rol_items' => $rol_items
             ]);
         }
     }
@@ -47,22 +47,22 @@ class UserController
     public function create(){
         $postData = json_decode(file_get_contents("php://input"));
 
-        $this->user->name = $postData->name;
-        $this->user->email = $postData->email;
-        $created = $this->user->create();
+        $this->rutasRolItems->fk_ruta = $postData->fk_ruta;
+        $this->rutasRolItems->fk_rol_item = $postData->fk_rol_item;
+        $created = $this->rutasRolItems->create();
         echo json_encode([
             'Estatus' => 'Code 201',
             'created' => $created
         ]);
     }
 
-    public function update($id){
+    public function update($id_ruta_rol){
         $putData = json_decode(file_get_contents("php://input"));
 
-        $this->user->name = $putData->name;
-        $this->user->email = $putData->email;
+        $this->rutasRolItems->fk_ruta = $putData->fk_ruta;
+        $this->rutasRolItems->fk_rol_item = $putData->fk_rol_item;
 
-        $updated = $this->user->update($id);
+        $updated = $this->rutasRolItems->update($id_ruta_rol);
 
         echo json_encode([
             'Estatus' => 'Code 200',
@@ -70,19 +70,16 @@ class UserController
         ]);
     }
 
-    public function delete($id){
-        $deleted = $this->user->delete($id);
+    public function delete($id_ruta_rol){
+        $deleted = $this->rutasRolItems->delete($id_ruta_rol);
         echo json_encode([
             'Estatus' => 'Code 200',
             'deleted' => $deleted
         ]);
     }
 
-    public function patch($id){
-        $patched = $this->user->patch($id);
-        echo json_encode([
-            'Estatus' => 'Code 200',
-            'patched' => $patched
-        ]);
-    }
+      
+
+
+
 }

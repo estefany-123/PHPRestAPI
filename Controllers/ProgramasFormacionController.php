@@ -49,8 +49,6 @@ class ProgramasFormacionController
 
         $this->programas->nombre = $postData->nombre;
         $this->programas->estado = $postData->estado;
-        $this->programas->created_at = $postData->created_at;
-        $this->programas->updated_at = $postData->updated_at;
         $this->programas->fk_area = $postData->fk_area;
 
         $created = $this->programas->create();
@@ -67,8 +65,6 @@ class ProgramasFormacionController
 
         $this->programas->nombre = $putData->nombre;
         $this->programas->estado = $putData->estado;
-        $this->programas->created_at = $putData->created_at;
-        $this->programas->updated_at = $putData->updated_at;
         $this->programas->fk_area = $putData->fk_area;
 
         $updated = $this->programas->update($id_programa);
@@ -85,6 +81,15 @@ class ProgramasFormacionController
         echo json_encode([
             'Estatus' => 'Code 200',
             'deleted' => $deleted
+        ]);
+    }
+
+    public function patch($id_programa)
+    {
+        $patched = $this->programas->patch($id_programa);
+        echo json_encode([
+            'Estatus' => 'Code 200',
+            'patched' => $patched
         ]);
     }
 }

@@ -16,7 +16,7 @@ class Fichas
         $this->conn = $db;
     }
 
-    
+    // funciona
     public function getAll()
     {
         $query = "SELECT * FROM " . $this->table_name;
@@ -25,7 +25,7 @@ class Fichas
         return $stmt;
     }
 
-    
+    // funciona
     public function getById($id)
     {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id_ficha = :id_ficha";
@@ -35,47 +35,54 @@ class Fichas
         return $stmt;
     }
 
-   
+//    funciona
     public function create()
     {
-        $query = "INSERT INTO " . $this->table_name . " (codigo_ficha, estado, created_at, updated_at, fk_programa) 
-                  VALUES (:codigo_ficha, :estado, :created_at, :updated_at, :fk_programa)";
+        $query = "INSERT INTO " . $this->table_name . " (codigo_ficha, estado, fk_programa) 
+                  VALUES (:codigo_ficha, :estado, :fk_programa)";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':codigo_ficha', $this->codigo_ficha);
         $stmt->bindParam(':estado', $this->estado);
-        $stmt->bindParam(':created_at', $this->created_at);
-        $stmt->bindParam(':updated_at', $this->updated_at);
         $stmt->bindParam(':fk_programa', $this->fk_programa);
 
         return $stmt->execute();
     }
 
-
+// funciona
     public function update($id)
     {
         $query = "UPDATE " . $this->table_name . " 
-                  SET codigo_ficha = :codigo_ficha, estado = :estado, created_at = :created_at, updated_at = :updated_at, fk_programa = :fk_programa
+                  SET codigo_ficha = :codigo_ficha, estado = :estado,  fk_programa = :fk_programa
                   WHERE id_ficha = :id_ficha";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':codigo_ficha', $this->codigo_ficha);
         $stmt->bindParam(':estado', $this->estado);
-        $stmt->bindParam(':created_at', $this->created_at);
-        $stmt->bindParam(':updated_at', $this->updated_at);
         $stmt->bindParam(':fk_programa', $this->fk_programa);
         $stmt->bindParam(':id_ficha', $id);
 
         return $stmt->execute();
     }
-
+// funciona
     public function delete($id)
     {
         $query = "DELETE FROM " . $this->table_name . " WHERE id_ficha = :id_ficha";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id_ficha', $id);
+        return $stmt->execute();
+    }
+
+
+    // funciona
+    public function patch($id){
+        $query = "UPDATE " . $this->table_name . " 
+                  SET estado = NOT estado 
+                  WHERE id_ficha = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 }

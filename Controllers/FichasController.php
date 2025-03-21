@@ -49,8 +49,6 @@ class FichasController
 
         $this->fichas->codigo_ficha = $postData->codigo_ficha;
         $this->fichas->estado = $postData->estado;
-        $this->fichas->created_at = $postData->created_at;
-        $this->fichas->updated_at = $postData->updated_at;
         $this->fichas->fk_programa = $postData->fk_programa;
 
         $created = $this->fichas->create();
@@ -67,8 +65,6 @@ class FichasController
 
         $this->fichas->codigo_ficha = $putData->codigo_ficha;
         $this->fichas->estado = $putData->estado;
-        $this->fichas->created_at = $putData->created_at;
-        $this->fichas->updated_at = $putData->updated_at;
         $this->fichas->fk_programa = $putData->fk_programa;
 
         $updated = $this->fichas->update($id_ficha);
@@ -85,6 +81,15 @@ class FichasController
         echo json_encode([
             'Estatus' => 'Code 200',
             'deleted' => $deleted
+        ]);
+    }
+
+    public function patch($id_ficha)
+    {
+        $patched = $this->fichas->patch($id_ficha);
+        echo json_encode([
+            'Estatus' => 'Code 200',
+            'patched' => $patched
         ]);
     }
 }

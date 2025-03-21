@@ -49,8 +49,6 @@ class SedesController
 
         $this->sedes->nombre = $postData->nombre;
         $this->sedes->estado = $postData->estado;
-        $this->sedes->created_at = $postData->created_at;
-        $this->sedes->updated_at = $postData->updated_at;
         $this->sedes->fk_centro = $postData->fk_centro;
 
         $created = $this->sedes->create();
@@ -67,8 +65,6 @@ class SedesController
 
         $this->sedes->nombre = $putData->nombre;
         $this->sedes->estado = $putData->estado;
-        $this->sedes->created_at = $putData->created_at;
-        $this->sedes->updated_at = $putData->updated_at;
         $this->sedes->fk_centro = $putData->fk_centro;
 
         $updated = $this->sedes->update($id_sede);
@@ -85,6 +81,16 @@ class SedesController
         echo json_encode([
             'Estatus' => 'Code 200',
             'deleted' => $deleted
+        ]);
+    }
+
+    
+    public function patch($id_sede)
+    {
+        $patched = $this->sedes->patch($id_sede);
+        echo json_encode([
+            'Estatus' => 'Code 200',
+            'patched' => $patched
         ]);
     }
 }

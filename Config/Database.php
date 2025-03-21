@@ -5,7 +5,7 @@ class Database
     private $host = "localhost";
     private $user = "postgres";
     private $pass = "321";
-    private $dbname = "PROYECTOFMT";
+    private $dbname = "PROYECTOFMT1";
 
     public $connect;
 

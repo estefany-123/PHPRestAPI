@@ -51,8 +51,6 @@ class SitiosController
         $this->sitios->persona_encargada = $postData->persona_encargada;
         $this->sitios->ubicacion = $postData->ubicacion;
         $this->sitios->estado = $postData->estado;
-        $this->sitios->created_at = $postData->created_at;
-        $this->sitios->updated_at = $postData->updated_at;
         $this->sitios->fk_tipo_sitio = $postData->fk_tipo_sitio;
         $this->sitios->fk_area = $postData->fk_area;
 
@@ -72,8 +70,6 @@ class SitiosController
         $this->sitios->persona_encargada = $putData->persona_encargada;
         $this->sitios->ubicacion = $putData->ubicacion;
         $this->sitios->estado = $putData->estado;
-        $this->sitios->created_at = $putData->created_at;
-        $this->sitios->updated_at = $putData->updated_at;
         $this->sitios->fk_tipo_sitio = $putData->fk_tipo_sitio;
         $this->sitios->fk_area = $putData->fk_area;
 
@@ -91,6 +87,15 @@ class SitiosController
         echo json_encode([
             'Estatus' => 'Code 200',
             'deleted' => $deleted
+        ]);
+    }
+
+    public function patch($id_sitio)
+    {
+        $patched = $this->sitios->patch($id_sitio);
+        echo json_encode([
+            'Estatus' => 'Code 200',
+            'patched' => $patched
         ]);
     }
 }

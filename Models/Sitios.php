@@ -19,7 +19,7 @@ class Sitios
         $this->conn = $db;
     }
 
-    // Obtener todos los sitios
+//    funciona
     public function getAll()
     {
         $query = "SELECT * FROM " . $this->table_name;
@@ -28,7 +28,7 @@ class Sitios
         return $stmt;
     }
 
-    // Obtener un sitio por ID
+//  funciona
     public function getById($id)
     {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id_sitio = :id_sitio";
@@ -38,12 +38,12 @@ class Sitios
         return $stmt;
     }
 
-    // Crear un nuevo sitio
+    // funciona
     public function create()
     {
         $query = "INSERT INTO " . $this->table_name . " 
-                  (nombre, persona_encargada, ubicacion, estado, created_at, updated_at, fk_tipo_sitio, fk_area) 
-                  VALUES (:nombre, :persona_encargada, :ubicacion, :estado, :created_at, :updated_at, :fk_tipo_sitio, :fk_area)";
+                  (nombre, persona_encargada, ubicacion, estado,  fk_tipo_sitio, fk_area) 
+                  VALUES (:nombre, :persona_encargada, :ubicacion, :estado,  :fk_tipo_sitio, :fk_area)";
 
         $stmt = $this->conn->prepare($query);
 
@@ -51,20 +51,18 @@ class Sitios
         $stmt->bindParam(':persona_encargada', $this->persona_encargada);
         $stmt->bindParam(':ubicacion', $this->ubicacion);
         $stmt->bindParam(':estado', $this->estado);
-        $stmt->bindParam(':created_at', $this->created_at);
-        $stmt->bindParam(':updated_at', $this->updated_at);
         $stmt->bindParam(':fk_tipo_sitio', $this->fk_tipo_sitio);
         $stmt->bindParam(':fk_area', $this->fk_area);
 
         return $stmt->execute();
     }
 
-    // Actualizar un sitio
+// funciona
     public function update($id)
     {
         $query = "UPDATE " . $this->table_name . " 
                   SET nombre = :nombre, persona_encargada = :persona_encargada, ubicacion = :ubicacion, 
-                      estado = :estado, created_at = :created_at, updated_at = :updated_at, 
+                      estado = :estado, 
                       fk_tipo_sitio = :fk_tipo_sitio, fk_area = :fk_area
                   WHERE id_sitio = :id_sitio";
 
@@ -74,8 +72,6 @@ class Sitios
         $stmt->bindParam(':persona_encargada', $this->persona_encargada);
         $stmt->bindParam(':ubicacion', $this->ubicacion);
         $stmt->bindParam(':estado', $this->estado);
-        $stmt->bindParam(':created_at', $this->created_at);
-        $stmt->bindParam(':updated_at', $this->updated_at);
         $stmt->bindParam(':fk_tipo_sitio', $this->fk_tipo_sitio);
         $stmt->bindParam(':fk_area', $this->fk_area);
         $stmt->bindParam(':id_sitio', $id);
@@ -83,12 +79,22 @@ class Sitios
         return $stmt->execute();
     }
 
-    // Eliminar un sitio
+// funciona
     public function delete($id)
     {
         $query = "DELETE FROM " . $this->table_name . " WHERE id_sitio = :id_sitio";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id_sitio', $id);
+        return $stmt->execute();
+    }
+
+// funciona
+    public function patch($id){
+        $query = "UPDATE " . $this->table_name . " 
+                  SET estado = NOT estado 
+                  WHERE id_sitio = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 }
