@@ -50,14 +50,16 @@ class UsuariosModel
     }
     
     public function login($correo, $password){
-        $query = "SELECT * FROM " . $this->table . " WHERE correo = ? AND password = ?";
+        $query = "SELECT * FROM " . $this->table . " WHERE correo = ?";
         $stmt = $this->connect->prepare($query);
 
         $stmt->bindParam(1, $correo);
-        $stmt->bindParam(2, $password);
+        
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($stmt->execute()){
-            return $stmt;
+        if(password_verify($password,$user["password"])){
+            return true;
         } else {
             $errors = $stmt->errorInfo();
             die("Error en la consulta SQL: " . $errors[2]);

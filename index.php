@@ -29,7 +29,8 @@ if (file_exists($controllerFile)) {
 
         case 'POST':
             if ($request[3] == 'login')  {
-                $tableController->login($_POST['correo'], $_POST['password']);
+                $body = json_decode(file_get_contents('php://input'));
+                $tableController->login($body->correo, $body->password);
             } else {
                 $tableController->create();
             }

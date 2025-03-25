@@ -46,20 +46,18 @@ class UsuariosController
     }
 
     public function login($correo, $password){
-        $stmt = $this->usuario->login($correo, $password);
-        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);   
+        $verified = $this->usuario->login($correo, $password);
 
-        if(!$usuario){
-            header("HTTP/1.1 404 Not Found");
+        if($verified){
             echo json_encode([
-                'Estatus' => 'Code 404',
-                'message' => 'User not found'
+                'Estatus' => 'Code 200',
+                'mensaje' => "Has iniciado sesión"
             ]);
         }        
         else{
             echo json_encode([
-                'Estatus' => 'Code 200',
-                'usuario' => $usuario
+                'Estatus' => 'Code 401',
+                'mensaje' => 'Usuario o contraseña incorrectos'
             ]);
         }
     }

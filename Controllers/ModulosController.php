@@ -1,63 +1,67 @@
 <?php
-require_once('Config/Database.php');
-require_once('Models/CategoriasModel.php');
 
-class CategoriasController
+require_once('Config/Database.php');
+require_once('Models/ModulosModel.php');
+
+
+class ModulosController
 {
     private $db;
-    private $categoria;
+    private $modulo;
 
     public function __construct()
     {
         $database = new Database();
 
         $this->db = $database->getConnection();
-        $this->categoria = new CategoriasModel($this->db);
+        $this->modulo = new ModulosModel($this->db);
     }
 
     public function getAll()
     {
-        $stmt = $this->categoria->getAll();
-        $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->modulo->getAll();
+        $modulos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         echo json_encode([
             'Estatus' => 'Code 200',
-            'categorias' => $categorias
+            'modulos' => $modulos
         ]);
     }
 
     public function getById($nombre){
-        $stmt = $this->categoria->getById($nombre);
-        $categoria = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->modulo->getById($nombre);
+        $modulo = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if(!$categoria){
+        if(!$modulo){
             header("HTTP/1.1 404 Not Found");
             echo json_encode([
                 'Estatus' => 'Code 404',
-                'message' => 'Categoria not found'
+                'message' => 'Modulo not found'
             ]);
         }
         else{
             echo json_encode([
                 'Estatus' => 'Code 200',
-                'categoria' => $categoria
+                'modulo' => $modulo
             ]);
         }
     }
+
 
     public function create(){
 
         $postData = json_decode(file_get_contents("php://input"));
 
-        $this->categoria->nombre = $postData->nombre;
-        $this->categoria->estado = $postData->estado;
+        $this->modulo->nombre = $postData->nombre;
+        $this->modulo->descripcion = $postData->descripcion;
+        $this->modulo->estado = $postData->estado;
 
-        $created = $this->categoria->create();
+        $created = $this->modulo->create();
 
         if($created){
             echo json_encode([
                 'Estatus' => 'Code 201',
-                'message' => 'Categoria created successfully'
+                'message' => 'modulo created successfully'
             ]);
         }
     }
@@ -65,32 +69,27 @@ class CategoriasController
     public function update($id){
         $putData = json_decode(file_get_contents("php://input"));
 
-        $this->categoria->nombre = $putData->nombre;
+        $this->modulo->nombre = $putData->nombre;
+        $this->modulo->descripcion = $putData->descripcion;
 
-        $updated = $this->categoria->update($id);
+        $updated = $this->modulo->update($id);
 
         if($updated){
             echo json_encode([
                 'Estatus' => 'Code 200',
-                'message' => 'Centro updated successfully'
+                'message' => 'Modulo updated successfully'
             ]);
         }
     }
 
-    public function delete($id){
-        $deleted = $this->categoria->delete($id);
-        echo json_encode([
-            'Estatus' => 'Code 200',
-            'deleted' => $deleted
-        ]);
-    }
-
     public function patch($id){
-        $patched = $this->categoria->patch($id);
+        $patched = $this->modulo->patch($id);
         echo json_encode([
             'Estatus' => 'Code 200',
             'patched' => $patched
         ]);
     }
-
+    
 }
+
+?>
