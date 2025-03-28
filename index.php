@@ -1,4 +1,10 @@
 <?php
+
+require_once __DIR__.'/vendor/autoload.php';
+use Firebase\JWT\SignatureInvalidException;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 // Encabezados
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE");
@@ -11,6 +17,33 @@ $table = ucfirst(strtolower($request[2])) . "Controller";
 
 // Carga el archivo del controlador correspondiente
 $controllerFile = __DIR__ . DIRECTORY_SEPARATOR . "Controllers" . DIRECTORY_SEPARATOR . $table . ".php";
+
+if($table != 'UsuariosController'){
+    $headers = getallheaders();
+    if(!isset($headers["Authorization"])) {
+        header("HTTP/2 401");
+        die(json_encode([
+            "message" => "Token no proveído"
+        ]));
+    }
+    $authHeader = explode(' ',$headers['Authorization'])[1] ?? null;
+    if(is_null($authHeader)){
+        header("HTTP/2 401");
+        die(json_encode([
+            "message" => "No tienes permitido entrar a esta ruta"
+        ]));
+    }
+    $key = 'estefany';
+    try{
+        $decoded = JWT::decode($authHeader, new Key($key, 'HS256'));
+    }
+    catch(Exception $error){
+        header("HTTP/2 401");
+        die(json_encode([
+            "message" => "Token invalido"
+        ]));
+    }
+}
 
 // Verifica si el archivo del controlador existe
 if (file_exists($controllerFile)) {
@@ -30,6 +63,10 @@ if (file_exists($controllerFile)) {
         case 'POST':
             if ($request[3] == 'login')  {
                 $body = json_decode(file_get_contents('php://input'));
+                if(!isset($body->correo) || !isset($body->password)) {
+                    header("HTTP/2 400");
+                    die(json_encode(["message" => "Credenciales no proveídas"]));
+                }
                 $tableController->login($body->correo, $body->password);
             } else {
                 $tableController->create();

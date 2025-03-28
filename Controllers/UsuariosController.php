@@ -2,6 +2,8 @@
 require_once('Config/Database.php');
 require_once('Models/UsuariosModel.php');
 
+use Firebase\JWT\JWT;
+
 class UsuariosController
 {
     private $db;
@@ -49,9 +51,19 @@ class UsuariosController
         $verified = $this->usuario->login($correo, $password);
 
         if($verified){
+
+            $key = 'estefany';
+
+            $payload = [
+                "correo" => $correo
+            ];
+
+            $token = JWT::encode($payload,$key,'HS256');
+
             echo json_encode([
                 'Estatus' => 'Code 200',
-                'mensaje' => "Has iniciado sesión"
+                'mensaje' => "Has iniciado sesión",
+                'access_token' => $token
             ]);
         }        
         else{

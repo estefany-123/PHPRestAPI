@@ -4,8 +4,8 @@ class Database
 {
     private $host = "localhost";
     private $user = "postgres";
-    private $pass = "pp";
-    private $dbname = "Formatrack";
+    private $pass = "123";
+    private $dbname = "formatrack";
 
     public $connect;
 

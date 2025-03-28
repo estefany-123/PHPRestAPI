@@ -58,11 +58,16 @@ class UsuariosModel
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if(empty($user)){
+            header("HTTP/2 404");
+            die(json_encode(["message" => "Usuario no encontrado"]));
+        }
+
         if(password_verify($password,$user["password"])){
             return true;
         } else {
-            $errors = $stmt->errorInfo();
-            die("Error en la consulta SQL: " . $errors[2]);
+            header("HTTP/2 401");
+            die(json_encode(["message" => "Contraseña incorrecta"]));
         }
     }
 
